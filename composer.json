@@ -1,5 +1,12 @@
 {
     "require": {
-        "silex/silex": "~2.0"
+        "silex/silex": "~2.0",
+        "twig/twig": "^2.2",
+        "monolog/monolog": "^1.22"
+    },
+    "autoload": {
+        "psr-4": {
+            "controllers\\": "controllers/"
+        }
     }
 }
