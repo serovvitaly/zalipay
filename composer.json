@@ -2,11 +2,13 @@
     "require": {
         "silex/silex": "~2.0",
         "twig/twig": "^2.2",
-        "monolog/monolog": "^1.22"
+        "monolog/monolog": "^1.22",
+        "mobiledetect/mobiledetectlib": "^2.8"
     },
     "autoload": {
         "psr-4": {
-            "controllers\\": "controllers/"
+            "controllers\\": "controllers/",
+            "services\\": "services/"
         }
     }
 }

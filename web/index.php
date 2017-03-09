@@ -6,7 +6,22 @@ require_once APP_DIR.'/vendor/autoload.php';
 
 $app = new Silex\Application();
 
+/**
+ *
+ */
 $app->register(new Silex\Provider\ServiceControllerServiceProvider());
+
+/**
+ * Mobile detector
+ */
+$app->register(new \services\MobileDetector\MobileDetectorServiceProvider());
+
+$templatesDir = APP_DIR.'/templates/default';
+
+if ($app['mobile_detector']->isMobile()) {
+
+    $templatesDir = APP_DIR.'/templates/mobile';
+}
 
 /**
  * Monolog
@@ -20,7 +35,7 @@ $app->register(new Silex\Provider\ServiceControllerServiceProvider());
  * Twig
  */
 $app->register(new \Silex\Provider\TwigServiceProvider(), array(
-    'twig.path' => APP_DIR.'/templates',
+    'twig.path' => $templatesDir,
 ));
 
 $app['debug'] = true;
