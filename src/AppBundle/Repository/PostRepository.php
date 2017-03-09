@@ -9,6 +9,8 @@ class PostRepository implements \Doctrine\Common\Persistence\ObjectRepository
 {
     protected $db;
 
+    protected $tableName = 'blog_post';
+
     public function __construct(Connection $db)
     {
         $this->db = $db;
@@ -30,7 +32,6 @@ class PostRepository implements \Doctrine\Common\Persistence\ObjectRepository
         }
 
         $postEntity = new PostEntity;
-
         $postEntity->setTitle($post['id']);
         $postEntity->setTitle($post['title']);
         $postEntity->setContent($post['content']);
@@ -66,7 +67,38 @@ class PostRepository implements \Doctrine\Common\Persistence\ObjectRepository
      */
     public function findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
     {
-        // TODO: Implement findBy() method.
+
+        $queryBuilder = $this->db->createQueryBuilder();
+
+        $queryBuilder
+            ->select('*')
+            ->from($this->tableName);
+
+        foreach ($criteria as $field => $value) {
+            if (is_array($value)) {
+                $queryBuilder->andWhere($queryBuilder->expr()->in($field, $value));
+                continue;
+            }
+            $queryBuilder->andWhere("{$field} = :{$field}");
+
+        }
+        $queryBuilder->setParameters($criteria);
+
+        $posts = $queryBuilder->execute();
+
+        $postsEntityArr = [];
+
+        foreach ($posts->fetchAll() as $post) {
+
+            $postEntity = new PostEntity;
+            $postEntity->setTitle($post['id']);
+            $postEntity->setTitle($post['title']);
+            $postEntity->setContent($post['content']);
+
+            $postsEntityArr[] = $postEntity;
+        }
+
+        return $postsEntityArr;
     }
 
     /**

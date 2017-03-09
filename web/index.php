@@ -29,6 +29,11 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), [
 $app->register(new Silex\Provider\ServiceControllerServiceProvider());
 
 /**
+ * Recommender
+ */
+$app->register(new \services\Recommender\RecommenderServiceProvider());
+
+/**
  * Mobile detector
  */
 $app->register(new \services\MobileDetector\MobileDetectorServiceProvider());
@@ -51,9 +56,9 @@ if ($app['mobile_detector']->isMobile()) {
 /**
  * Twig
  */
-$app->register(new \Silex\Provider\TwigServiceProvider(), array(
+$app->register(new \Silex\Provider\TwigServiceProvider(), [
     'twig.path' => $templatesDir,
-));
+]);
 
 require_once __DIR__.'/../routes.php';
 

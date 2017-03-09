@@ -14,8 +14,34 @@ $app->get('/', function () use ($app) {
 /**
  * Вывод документов для указанной страницы
  */
-$app->get('/page/{pageId}/', function (int $pageId) {
-    return $pageId;
+$app->get('/page/{pageId}/', function (int $pageId) use ($app) {
+
+    $recommender = $app['recommender'];
+
+    $documentsIdsArr = $recommender->getDocumentsIds();
+
+    $postsEntityArr = $app['posts.repository']->findBy([
+        'id' => $documentsIdsArr,
+        //'status' => 'p',
+    ], null, 10, 0);
+
+    if (empty($postsEntityArr)) {
+        return '';
+    }
+
+    $outputHtml = '';
+
+    /**
+     * @var $postEntity \AppBundle\Entity\PostEntity
+     */
+    foreach ($postsEntityArr as $postEntity) {
+        $outputHtml .= $app['twig']->render('article.html', array(
+            'title' => $postEntity->getTitle(),
+            'content' => $postEntity->getContent(),
+        ));
+    }
+
+    return $outputHtml;
 });
 
 /**
