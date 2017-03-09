@@ -19,7 +19,7 @@
 <script>
     function showModal(postId) {
         history.pushState({'page_id': postId}, '', '/post/'+postId+'/');
-        $.get('/post/'+postId+'/?from=index', function(html){
+        $.get('/ajax/post/'+postId+'/?from=index', function(html){
             $('#modalPostContent').html(html);
         });
         $('#postModal').modal('show');
@@ -29,8 +29,8 @@
         $('#postModal').on('hide.bs.modal', function (e) {
             history.pushState({'page_id': 0}, '', '/');
         });
-        {% if item %}
-        showModal({{ item.id }});
+        {% if article_id %}
+        showModal({{ article_id }});
         {% endif %}
     });
 </script>

@@ -6,6 +6,9 @@ require_once APP_DIR.'/vendor/autoload.php';
 
 $app = new Silex\Application();
 
+Symfony\Component\Debug\Debug::enable();
+$app['debug'] = true;
+
 /**
  * Config
  */
@@ -14,7 +17,14 @@ $app->register(new \services\Config\ConfigServiceProvider(), [
 ]);
 
 /**
- *
+ * Doctrine
+ */
+$app->register(new Silex\Provider\DoctrineServiceProvider(), [
+    'db.options' => $app['config']['db.options'],
+]);
+
+/**
+ * Service controller
  */
 $app->register(new Silex\Provider\ServiceControllerServiceProvider());
 
@@ -45,8 +55,10 @@ $app->register(new \Silex\Provider\TwigServiceProvider(), array(
     'twig.path' => $templatesDir,
 ));
 
-$app['debug'] = true;
-
 require_once __DIR__.'/../routes.php';
+
+$app['posts.repository'] = function() use ($app) {
+    return new \AppBundle\Repository\PostRepository($app['db']);
+};
 
 $app->run();

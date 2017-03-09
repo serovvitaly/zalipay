@@ -2,8 +2,6 @@
 
 namespace controllers;
 
-use Symfony\Component\HttpFoundation\Response;
-
 class IndexController extends Controller
 {
     public function actionIndex()
