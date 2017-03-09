@@ -1,7 +1,13 @@
 <?php
+/**
+ * @var $app \Silex\Application
+ */
 
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * Вывод главной страницы
+ */
 $app->get('/', function () use ($app) {
     return $app['twig']->render('index.html', array(
         'wrapper_widget' => 'widget/multi-column.html',
