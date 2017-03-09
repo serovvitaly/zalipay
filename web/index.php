@@ -15,5 +15,8 @@ require_once __DIR__.'/../providers.php';
 $app['posts.repository'] = function() use ($app) {
     return new \AppBundle\Repository\PostRepository($app['db']);
 };
+$app['ribbons.repository'] = function() use ($app) {
+    return new \AppBundle\Repository\RibbonRepository($app['db']);
+};
 
 $app->run();

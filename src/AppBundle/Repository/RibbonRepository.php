@@ -3,33 +3,31 @@
 namespace AppBundle\Repository;
 
 
-use AppBundle\Entity\PostEntity;
+use AppBundle\Entity\Ribbon;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\DBAL\Connection;
 
-class PostRepository implements ObjectRepository
+class RibbonRepository implements ObjectRepository
 {
     protected $db;
 
-    protected $tableName = 'blog_post';
+    protected $tableName = 'blog_ribbon';
 
     public function __construct(Connection $db)
     {
         $this->db = $db;
     }
 
-    public static function makeEntityByArray(array $data): PostEntity
+    public static function makeEntityByArray(array $data): Ribbon
     {
         $metaData = json_decode($data['meta_data']);
 
-        $postEntity = new PostEntity;
-        $postEntity->setId($data['id']);
-        $postEntity->setTitle($data['title']);
-        $postEntity->setContent($data['content']);
-        $postEntity->setRibbonId($data['ribbon_id']);
-        $postEntity->setSourceUrl($metaData->source_url);
+        $entity = new Ribbon;
+        $entity->setId($data['id']);
+        $entity->setTitle($data['title']);
+        $entity->setLogoUrl($metaData->logo_url);
 
-        return $postEntity;
+        return $entity;
     }
 
     /**
@@ -37,17 +35,17 @@ class PostRepository implements ObjectRepository
      *
      * @param mixed $id The identifier.
      *
-     * @return PostEntity|null The object.
+     * @return object|null The object.
      */
-    public function find($id): PostEntity
+    public function find($id)
     {
-        $post = $this->db->fetchAssoc('select * from blog_post where id = ?', [(int)$id]);
+        $entity = $this->db->fetchAssoc('select * from ' . $this->tableName . ' where id = ?', [(int)$id]);
 
-        if (!$post) {
+        if (!$entity) {
             return null;
         }
 
-        return self::makeEntityByArray($post);
+        return self::makeEntityByArray($entity);
     }
 
     /**
@@ -94,15 +92,15 @@ class PostRepository implements ObjectRepository
         }
         $queryBuilder->setParameters($criteria);
 
-        $posts = $queryBuilder->execute();
+        $entities = $queryBuilder->execute();
 
-        $postsEntityArr = [];
+        $entitiesArr = [];
 
-        foreach ($posts->fetchAll() as $post) {
-            $postsEntityArr[] = self::makeEntityByArray($post);;
+        foreach ($entities->fetchAll() as $data) {
+            $entitiesArr[] = self::makeEntityByArray($data);;
         }
 
-        return $postsEntityArr;
+        return $entitiesArr;
     }
 
     /**
@@ -124,6 +122,6 @@ class PostRepository implements ObjectRepository
      */
     public function getClassName()
     {
-        return __CLASS__;
+        // TODO: Implement getClassName() method.
     }
 }
