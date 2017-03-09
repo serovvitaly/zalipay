@@ -2,10 +2,6 @@
 
 use Symfony\Component\HttpFoundation\Request;
 
-$app['posts.controller'] = function($app) {
-    return new \controllers\IndexController($app);
-};
-
 $app->get('/', function () use ($app) {
     return $app['twig']->render('index.html', array(
         'wrapper_widget' => 'widget/multi-column.html',
@@ -25,7 +21,7 @@ $app->get('/page/{pageId}/', function (int $pageId) {
 /**
  * Вывод документа по указанному идентификатору
  */
-$app->get('/post/{postId}/', function (Request $request, int $postId) use ($app) {
+$app->get('/post/{postId}/', function (int $postId) use ($app) {
 
     $pageHtml = $app['twig']->render('index.html', array(
         'wrapper_widget' => 'widget/multi-column.html',
