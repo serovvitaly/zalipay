@@ -7,6 +7,13 @@ require_once APP_DIR.'/vendor/autoload.php';
 $app = new Silex\Application();
 
 /**
+ * Config
+ */
+$app->register(new \services\Config\ConfigServiceProvider(), [
+    'config.path' => APP_DIR.'/config.yml',
+]);
+
+/**
  *
  */
 $app->register(new Silex\Provider\ServiceControllerServiceProvider());
