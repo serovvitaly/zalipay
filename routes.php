@@ -19,18 +19,27 @@ $app->get('/', function () use ($app) {
  * Вывод статей для указанной страницы
  */
 $app->get('/page/{pageId}/', function (int $pageId) use ($app) {
-
+    /** @var \services\Recommender\RecommenderService $recommender */
     $recommender = $app['recommender'];
+
+    $limit = 12;
+    $offset = ($pageId - 1) * $limit;
+
+    $recommender->setLimit($limit);
+    $recommender->setOffset($offset);
 
     $documentsIdsArr = $recommender->getDocumentsIds();
 
     $postsEntityArr = $app['posts.repository']->findBy([
         'id' => $documentsIdsArr,
         //'status' => 'p',
-    ], null, 10, 0);
+    ]);
 
     if (empty($postsEntityArr)) {
-        return '';
+        return json_encode([
+            'count' => 0,
+            'items' => [],
+        ]);
     }
 
     $articlesArr = [];

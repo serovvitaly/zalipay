@@ -80,7 +80,9 @@ class RibbonRepository implements ObjectRepository
 
         $queryBuilder
             ->select('*')
-            ->from($this->tableName);
+            ->from($this->tableName)
+            ->setFirstResult($offset)
+            ->setMaxResults($limit);
 
         foreach ($criteria as $field => $value) {
             if (is_array($value)) {

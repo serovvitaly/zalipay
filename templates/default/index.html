@@ -43,7 +43,7 @@ function loadPosts() {
         'dataType': 'json',
         'success': function(response){
             if(response.items.length < 1){
-                //return null;
+                return;
             }
             $.each(response.items, function (index, itemHtml) {
                 appendItemToColumn(itemHtml);

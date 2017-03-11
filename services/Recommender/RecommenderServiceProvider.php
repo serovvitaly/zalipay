@@ -18,7 +18,7 @@ class RecommenderServiceProvider implements ServiceProviderInterface
     public function register(\Pimple\Container $pimple)
     {
         $pimple['recommender'] = function($app) {
-            return new RecommenderService;
+            return new RecommenderService($app);
         };
     }
 }

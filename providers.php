@@ -25,7 +25,9 @@ $app->register(new Silex\Provider\ServiceControllerServiceProvider());
 /**
  * Recommender
  */
-$app->register(new \services\Recommender\RecommenderServiceProvider());
+$app->register(new \services\Recommender\RecommenderServiceProvider(), [
+    'app' => $app,
+]);
 
 /**
  * Monolog
