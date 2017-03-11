@@ -4,8 +4,7 @@
 
 {% block center %}
 <div class="row">
-    <div class="col-lg-12">
-        {% include wrapper_widget %}
+    <div id="mc-column">
     </div>
     <div class="col-lg-12">
         <div class="row">
@@ -21,23 +20,16 @@
 <script>
 var currentPageNumber = 1;
 function loadPosts() {
-    var ch = [];
-    ch.push(document.getElementById('mc-column-1').clientHeight);
-    ch.push(document.getElementById('mc-column-2').clientHeight);
-    ch.push(document.getElementById('mc-column-3').clientHeight);
     $.ajax({
         'url': '/page/' + currentPageNumber + '/',
         'type': 'get',
         'dataType': 'json',
-        'data': {
-            'ch': ch.join(',')
-        },
         'success': function(response){
             if(response.items.length < 1){
-                return null;
+                return;
             }
-            $.each(response.items, function (columnNumber, columnHtml) {
-                $('#mc-column-'+columnNumber).append(columnHtml);
+            $.each(response.items, function (index, itemHtml) {
+                $('#mc-column').append(itemHtml);
             });
             currentPageNumber += 1;
         }
