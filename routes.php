@@ -105,15 +105,21 @@ $app->get('/ajax/post/{postId}/', function (Request $request, int $postId) use (
 
     /**
      * @var $postEntity \AppBundle\Entity\PostEntity
+     * @var $ribbonEntity \AppBundle\Entity\Ribbon
      */
     $postEntity = $app['posts.repository']->find($postId);
+    $ribbonEntity = $app['ribbons.repository']->find($postEntity->getRibbonId());
 
-    $articleHtml = $app['twig']->render('article.html', array(
+    $postHtml = $app['twig']->render('article.html', array(
         'title' => $postEntity->getTitle(),
         'content' => $postEntity->getContent(),
         'source_url' => $postEntity->getSourceUrl(),
         'source_base_url' => $postEntity->getSourceBaseUrl(),
     ));
 
-    return $articleHtml;
+    return json_encode([
+        'html' => $postHtml,
+        'ribbon_title' => $ribbonEntity->getTitle(),
+        'ribbon_icon' => $ribbonEntity->getLogoUrl(),
+    ]);
 });
