@@ -11,7 +11,7 @@ class RibbonRepository implements ObjectRepository
 {
     protected $db;
 
-    protected $tableName = 'blog_ribbon';
+    protected $tableName = 'ribbons';
 
     public function __construct(Connection $db)
     {

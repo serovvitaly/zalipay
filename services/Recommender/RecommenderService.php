@@ -14,7 +14,7 @@ class RecommenderService
 
     public function getDocumentsIds()
     {
-        $rows = $this->app['posts.repository']->findBy([], null, $this->limit, $this->offset);
+        $rows = $this->app['documents.repository']->findBy([], null, $this->limit, $this->offset);
         $docsIdsArr = [];
         foreach ($rows as $row) {
             $docsIdsArr[] = $row->getId();

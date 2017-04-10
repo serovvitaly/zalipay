@@ -40,7 +40,7 @@ $app['debug'] = true;
 require_once __DIR__.'/../routes.php';
 require_once __DIR__.'/../providers.php';
 
-$app['posts.repository'] = function() use ($app) {
+$app['documents.repository'] = function() use ($app) {
     return new PostRepository($app['db']);
 };
 $app['ribbons.repository'] = function() use ($app) {

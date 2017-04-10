@@ -30,12 +30,19 @@ $app->get('/page/{pageId}/', function (int $pageId) use ($app) {
 
     $documentsIdsArr = $recommender->getDocumentsIds();
 
-    $postsEntityArr = $app['posts.repository']->findBy([
+    if (empty($documentsIdsArr)) {
+        return json_encode([
+            'count' => 0,
+            'items' => [],
+        ]);
+    }
+
+    $documents = $app['documents.repository']->findBy([
         'id' => $documentsIdsArr,
         //'status' => 'p',
     ]);
 
-    if (empty($postsEntityArr)) {
+    if (empty($documents)) {
         return json_encode([
             'count' => 0,
             'items' => [],
@@ -44,10 +51,10 @@ $app->get('/page/{pageId}/', function (int $pageId) use ($app) {
 
     $articlesArr = [];
 
-    /** @var $postEntity \AppBundle\Entity\PostEntity */
+    /** @var $document \AppBundle\Entity\PostEntity */
     $ribbonsIdsArr = [];
-    foreach ($postsEntityArr as $postEntity) {
-        $ribbonsIdsArr[] = $postEntity->getRibbonId();
+    foreach ($documents as $document) {
+        $ribbonsIdsArr[] = $document->getRibbonId();
     }
     $ribbonsIdsArr = array_unique($ribbonsIdsArr);
 
@@ -61,12 +68,12 @@ $app->get('/page/{pageId}/', function (int $pageId) use ($app) {
     }
     $ribbons = $ribbonsReindex;
 
-    foreach ($postsEntityArr as $postEntity) {
-        $ribbon = $ribbons[$postEntity->getRibbonId()];
+    foreach ($documents as $document) {
+        $ribbon = $ribbons[$document->getRibbonId()];
         $articlesArr[] = $app['twig']->render('article-mini.html', [
-            'atricle_id' => $postEntity->getId(),
-            'atricle_title' => $postEntity->getTitle(),
-            'atricle_annotation' => $postEntity->getAnnotation(),
+            'atricle_id' => $document->getId(),
+            'atricle_title' => $document->getTitle(),
+            'atricle_annotation' => $document->getAnnotation(),
             'atricle_image_url' => '',
             'atricle_url' => '',
 
@@ -76,7 +83,7 @@ $app->get('/page/{pageId}/', function (int $pageId) use ($app) {
     }
 
     return json_encode([
-        'count' => count($postsEntityArr),
+        'count' => count($documents),
         'items' => $articlesArr,
     ]);
 });

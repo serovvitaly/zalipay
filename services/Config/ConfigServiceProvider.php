@@ -5,10 +5,10 @@ namespace services\Config;
 
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
+use Symfony\Component\Yaml\Yaml;
 
 class ConfigServiceProvider implements ServiceProviderInterface
 {
-
     /**
      * Registers services on the given container.
      *
@@ -20,7 +20,7 @@ class ConfigServiceProvider implements ServiceProviderInterface
     public function register(Container $pimple)
     {
         $pimple['config'] = function($app) {
-            return \Symfony\Component\Yaml\Yaml::parse(file_get_contents($app['config.path']));
+            return Yaml::parse(file_get_contents($app['config.path']));
         };
     }
 }

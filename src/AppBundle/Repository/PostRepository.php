@@ -11,7 +11,7 @@ class PostRepository implements ObjectRepository
 {
     protected $db;
 
-    protected $tableName = 'blog_post';
+    protected $tableName = 'documents';
 
     public function __construct(Connection $db)
     {
