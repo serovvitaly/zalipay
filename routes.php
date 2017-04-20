@@ -114,7 +114,7 @@ $app->get('/ajax/post/{postId}/', function (Request $request, int $postId) use (
      * @var $postEntity \AppBundle\Entity\PostEntity
      * @var $ribbonEntity \AppBundle\Entity\Ribbon
      */
-    $postEntity = $app['posts.repository']->find($postId);
+    $postEntity = $app['documents.repository']->find($postId);
     $ribbonEntity = $app['ribbons.repository']->find($postEntity->getRibbonId());
 
     $postHtml = $app['twig']->render('article.html', array(

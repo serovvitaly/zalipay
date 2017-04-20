@@ -41,7 +41,7 @@ class PostRepository implements ObjectRepository
      */
     public function find($id): PostEntity
     {
-        $post = $this->db->fetchAssoc('select * from blog_post where id = ?', [(int)$id]);
+        $post = $this->db->fetchAssoc('select * from documents where id = ?', [(int)$id]);
 
         if (!$post) {
             return null;
