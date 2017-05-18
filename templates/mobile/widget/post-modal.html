@@ -19,9 +19,9 @@
 <script>
     function showModal(postId) {
         history.pushState({'page_id': postId}, '', '/post/'+postId+'/');
-        $.get('/ajax/post/'+postId+'/?from=index', function(html){
-            $('#modalPostContent').html(html);
-        });
+        $.get('/ajax/post/'+postId+'/?from=index', function(response){
+            $('#modalPostContent').html(response.html);
+        }, 'json');
         $('#postModal').modal('show');
         return false;
     }

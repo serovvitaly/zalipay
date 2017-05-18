@@ -5,13 +5,15 @@
         "monolog/monolog": "^1.22",
         "mobiledetect/mobiledetectlib": "^2.8",
         "symfony/yaml": "^3.2",
-        "doctrine/dbal": "~2.2"
+        "doctrine/dbal": "~2.2",
+        "symfony/console": "^3.2"
     },
     "autoload": {
         "psr-4": {
             "AppBundle\\": "src/AppBundle/",
             "controllers\\": "controllers/",
-            "services\\": "services/"
+            "services\\": "services/",
+            "Command\\": "commands/"
         }
     }
 }
