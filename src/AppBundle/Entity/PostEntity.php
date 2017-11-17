@@ -70,6 +70,7 @@ class PostEntity
     public function getAnnotation()
     {
         $content = strip_tags($this->content, '<img><p><strong>');
+        #$content = preg_replace("/<([a-z][a-z0-9]*)[^>]*?(\/?)>/i",'<$1$2>', $content);
         $annotationParts = explode(' ', $content);
         $annotationParts = array_slice($annotationParts, 0, 100);
         $annotation = implode(' ', $annotationParts);
